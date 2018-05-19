@@ -4,10 +4,8 @@ module datareg(input[12:0] addr,input[7:0] data,input ld,output reg[7:0] out);
 	reg init=0;
 	always@(addr,data,ld)begin
 		if(!init)begin
-			r[100]<=8'b10000000;
-			r[101]<=8'b00010000;
-			r[102]<=8'b10000000;
-			r[103]<=8'b00010000;
+			r[0]<=15;
+			r[1]<=20;
 			init<=1;
 		end
 		if (ld) r[addr]<=data;
