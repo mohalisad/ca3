@@ -13,6 +13,7 @@ module main(input clk,rst);
 	wire cout,zero;
 	wire jmp;
 	wire[5:0] s;
+	controller mycontroller(opr,clk,halt,alu_cont,s);
 	jmpchk checker(s[4],di[2:1],z,c,n,jmp);
 	pcreg mypcreg(npc,clk,rst,pc);
 	pcadder pa(pc,pcinc);
