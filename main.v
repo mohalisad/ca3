@@ -28,16 +28,18 @@ module main(input clk,rst);
 	always@(posedge clk,rst)begin
 		#1;
 		if(clk)begin
-			opr<=inst[7:4];
 			if(halt)begin
 				halt<=0;
 				tr[7:0]<=inst[7:0];
-			end else if((!inst[7])||inst[7:5]==6)begin
-				halt<=1;
-				opr<={1'b0,inst[7:5]};
-				tr[12:8]<=inst[4:0];
+			end else begin
+				opr<=inst[7:4];
+				if((!inst[7])||inst[7:5]==6)begin
+					halt<=1;
+					opr<={1'b0,inst[7:5]};
+					tr[12:8]<=inst[4:0];
+				end
+				if(inst[7:5]==3'b111)di<=inst[4:0];
 			end
-			if(inst[7:5]==3'b111)di<=inst[4:0];
 		end
 		if(rst)begin
 			di<=0;
