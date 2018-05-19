@@ -20,10 +20,10 @@ module main(input clk,rst);
 	mux13 mymux4(pcinc,tr,jmp,npc);
 	instructreg myinstreg(pc,rst,inst);
 	ALU myalu(alu_cont,n1,n2,c,clk,y, cout,zero);
-	mux8 mmux1(di[4:3],inst[1:0],s[0],ra1);
+	mux2 mmux1(di[4:3],inst[1:0],s[0],ra1);
 	reg8 myreg8(ra1,inst[3:2],wa,y,s[2],clk,rst,n1,rd2);
 	mux8 mmux2(dout,rd2,s[1],n2);
-	mux8 mmux3(di[4:3],inst[3:2],s[5],wa);
+	mux2 mmux3(di[4:3],inst[3:2],s[5],wa);
 	datareg mydatareg(tr,y,s[3],dout);
 	always@(posedge clk,rst)begin
 		#1;
@@ -31,6 +31,12 @@ module main(input clk,rst);
 			if(halt)begin
 				halt<=0;
 				tr[7:0]<=inst[7:0];
+				#10;
+				if(opr==3'b000||opr==3'b010||opr==3'b011)begin
+					c<=cout;
+					z<=zero;
+					n<=y[7];
+				end
 			end else begin
 				opr<=inst[7:4];
 				if((!inst[7])||inst[7:5]==6)begin
@@ -39,6 +45,12 @@ module main(input clk,rst);
 					tr[12:8]<=inst[4:0];
 				end
 				if(inst[7:5]==3'b111)di<=inst[4:0];
+				#10;
+				if(inst[7:4]==4'b1001||inst[7:4]==4'b1010||inst[7:4]==4'b1011)begin
+					c<=cout;
+					z<=zero;
+					n<=y[7];
+				end
 			end
 		end
 		if(rst)begin

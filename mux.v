@@ -27,3 +27,10 @@ module mux3(input[2:0] a,input[2:0] b,input s,output[2:0] w);
 	end
 	endgenerate
 endmodule
+module mux2(input[1:0] a,input[1:0] b,input s,output[1:0] w);
+	genvar i;
+	generate for(i=0;i<2;i=i+1) begin
+		mux1 t(a[i],b[i],s,w[i]);
+	end
+	endgenerate
+endmodule
